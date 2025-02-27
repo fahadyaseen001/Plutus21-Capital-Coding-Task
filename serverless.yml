@@ -1,0 +1,36 @@
+service: todo-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  deploymentBucket:
+    name: todo-aws-s3-bucket-test
+  stage: ${opt:stage, 'dev'}
+  environment:
+    TASKS_TABLE: TasksTable
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:BatchGetItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TASKS_TABLE}"
+
+functions:
+  getTasks:
+    handler: src/handler.getTasks
+    events:
+      - http:
+          path: tasks
+          method: get
+          cors: true
+
+plugins:
+  - serverless-plugin-typescript
+
+package:
+  individually: true
