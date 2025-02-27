@@ -71,6 +71,15 @@ Configure AWS credentials
 ```bash
  aws configure
 ```
+### Create S3 Bucket
+
+Create an S3 Bucket (Deployment Bucket) named "todo-aws-s3-bucket-test" using AWS Console or u can create your own bucket with any name and manually change the deployment bucket name to your `serverless.yml` under the `deploymentBucket` section:
+
+```yml
+deploymentBucket:
+    name: your-s3-bucket-name
+```
+
 ### Create DynamoDB Table
 
 Create a DynamoDB table named `TasksTable` with a primary key `id` (String).You can do this manually in the AWS Console or add the following to your `serverless.yml` under the `resources` section:
